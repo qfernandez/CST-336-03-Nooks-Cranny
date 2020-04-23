@@ -1,0 +1,25 @@
+{
+  "name": "cst-336-03-nooks-cranny",
+  "version": "1.0.0",
+  "description": "CST 336 - 03 Full Stack Website Project : Recreating Nooks Cranny from Animal Crossing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qfernandez/CST-336-03-Nooks-Cranny.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qfernandez/CST-336-03-Nooks-Cranny/issues"
+  },
+  "homepage": "https://github.com/qfernandez/CST-336-03-Nooks-Cranny#readme",
+  "dependencies": {
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mysql": "^2.18.1"
+  }
+}
