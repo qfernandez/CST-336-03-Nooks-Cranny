@@ -2,7 +2,7 @@
   "name": "cst-336-03-nooks-cranny",
   "version": "1.0.0",
   "description": "CST 336 - 03 Full Stack Website Project : Recreating Nooks Cranny from Animal Crossing",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
