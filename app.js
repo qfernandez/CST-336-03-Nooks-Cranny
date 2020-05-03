@@ -6,8 +6,8 @@ const app = express();
 /* Configure our server to read public folder and ejs files */
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-+app.engine('ejs', require('ejs').__express);
-app.use(express.urlencoded()); //use to parse data sent using the POST method
++app.engine('ejs', require('ejs').__express); //Wouldn't initally read ejs so I had to install this
+app.use(express.urlencoded()); //Used to parse data sent using the POST method
 
 /* Configure MySQL DBMS */
 // const connection = mysql.createConnection({
@@ -18,20 +18,22 @@ app.use(express.urlencoded()); //use to parse data sent using the POST method
 // });
 // connection.connect();
 
+//Used Pool since I was getting some connection errors 
+//Connection was lost a few seconds after starting node app.js
 const pool = mysql.createPool({
     host: 'us-cdbr-east-06.cleardb.net',
     user: 'b2a968485b2e2b',
     password: '2285bad0',
     database: 'heroku_f758c5b0e9a8469'
 });
-
-// ... later
 pool.query('select 1 + 1', (err, rows) => { /* */ });
 
 //routes
 app.get("/", async function(req, res){
-    let villagerList = await getVillagers();  
-    res.render("index", {"villagerList":villagerList});
+    let villagerList = await getVillagers();
+    let productList = await getProducts();
+    let reviewList = await getReviews();
+    res.render("index", {"villagerList":villagerList,"productList":productList,"reviewList":reviewList});
 });
 
 //functions
@@ -40,6 +42,33 @@ function getVillagers(){
            let sql = `SELECT *
                         FROM villagers
                         ORDER BY villagerName`;
+           pool.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              resolve(rows);
+           });
+        
+    });//promise 
+}
+
+function getProducts(){
+    return new Promise(function(resolve, reject){
+           let sql = `SELECT *
+                        FROM products
+                        ORDER BY productName`;
+           pool.query(sql, function (err, rows, fields) {
+              if (err) throw err;
+              resolve(rows);
+           });
+        
+    });//promise 
+}
+
+function getReviews(){
+    return new Promise(function(resolve, reject){
+           let sql = `SELECT *
+                        FROM reviews
+                        NATURAL JOIN villagers NATURAL JOIN products
+                        ORDER BY productId`;
            pool.query(sql, function (err, rows, fields) {
               if (err) throw err;
               resolve(rows);
