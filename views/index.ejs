@@ -1,12 +1,8 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>Nook's Cranny</title>
-    </head>
-    <body>
+<%- include('partials/header.ejs') %>
         <h1>Welcome to Nook's Cranny</h1>
         <h2>Villagers</h2>
-            <div class="row-villagers">
+        
+            <div class="row">
                 <% villagerList.forEach(function(villager){  %>
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
