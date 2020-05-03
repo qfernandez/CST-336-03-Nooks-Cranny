@@ -5,5 +5,22 @@
     </head>
     <body>
         <h1>Welcome to Nook's Cranny</h1>
+        <h2>Villagers</h2>
+            <div class="row-villagers">
+                <% villagerList.forEach(function(villager){  %>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100">
+                            <td><img class="rounded" src="<%=villager.villagerPicture%>" width="200px"/></td> <br>
+                        <div class="card-body">
+                    <h4 class="card-title">
+                        <%= villager.villagerName %>
+                    </h4>
+              </div>
+           </div>
+          </div>
+        <% }) %>
+            </div>
+        <h2>Items</h2>
+        <h2>Reviews</h2></h2>
     </body>
 </html>
