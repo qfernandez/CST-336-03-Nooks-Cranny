@@ -36,6 +36,10 @@ app.get("/", async function(req, res){
     res.render("index", {"villagerList":villagerList,"productList":productList,"reviewList":reviewList});
 });
 
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
 //functions
 function getVillagers(){
     return new Promise(function(resolve, reject){
