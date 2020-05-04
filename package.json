@@ -17,10 +17,11 @@
   },
   "homepage": "https://github.com/qfernandez/CST-336-03-Nooks-Cranny#readme",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "ejs": "^3.0.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "mysql": "^2.18.1",
-    "react-scripts": "^2.1.8"
+    "react-scripts": "^3.4.1"
   }
 }
