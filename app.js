@@ -63,6 +63,11 @@ app.get("/addproductPage", function(req, res){
     res.render("productAdd");
 });
 
+app.get("/results", async function(req, res){
+    let rows = await getProds(req.query);
+    res.render("results", {"products":rows});
+});
+
 //functions
 function getVillagers(){
     return new Promise(function(resolve, reject){
@@ -124,17 +129,20 @@ app.post('/villager/new', function(req, res){
             pool.query(stmt, function(error, result){
                 if(error) throw error;
                 res.redirect('/');
-            });
+            })
       }
   });
 });
 
+
+
+//Make new product
 app.post('/product/new', function(req, res){
   //console.log(req.body);
   pool.query('SELECT COUNT(*) FROM products;', function(error, result){
       if(error) throw error;
       if(result.length){
-            var productId = result[0]['COUNT(*)'] + 1;
+            var productId = result[0]['COUNT(*)'] + 2;
             var stmt = 'INSERT INTO products ' +
                        '(productId, productName, productPicture, productDescription, productType, productPrice) '+
                        'VALUES ' +
@@ -154,6 +162,94 @@ app.post('/product/new', function(req, res){
       }
   });
 });
+//Show Product
+app.get('/product/:aid', function(req, res){
+    var stmt = 'SELECT * FROM products WHERE productId=' + req.params.aid + ';';
+    console.log(stmt);
+    pool.query(stmt, function(error, results){
+       if(error) throw error;
+       if(results.length){
+           var product = results[0];
+           res.render('productInfo', {"product": product});
+       }
+    });
+});
+
+
+//Edit product
+app.get('/product/:aid/edit', function(req, res){
+    var stmt = 'SELECT * FROM products WHERE productId=' + req.params.aid + ';';
+    pool.query(stmt, function(error, results){
+       if(error) throw error;
+       if(results.length){
+           var product = results[0];
+           res.render('productEdit', {"product": product});
+       }
+    });
+});
+
+//Update product
+app.put('/product/:aid', function(req, res){
+    console.log(req.body);
+    var stmt = 'UPDATE products SET ' +
+                'productName = "'+ req.body.productName + '",' +
+                'productPicture = "'+ req.body.productPicture + '",' +
+                'productDescription = "'+ req.body.productDescription + '",' +
+                'productType = "'+ req.body.productType + '",' +
+                'productPrice = "'+ req.body.productPrice + '",' +
+                'WHERE productId = ' + req.params.aid + ";";
+    console.log(stmt);
+    pool.query(stmt, function(error, result){
+        if(error) throw error;
+        res.redirect('/product/' + req.params.aid);
+    });
+});
+
+// app.put('/author/:aid', function(req, res){
+//     console.log(req.body);
+//     var stmt = 'UPDATE l9_author SET ' +
+//                 'firstName = "'+ req.body.firstname + '",' +
+//                 'lastName = "'+ req.body.lastname + '",' +
+//                 'dob = "'+ req.body.dob + '",' +
+//                 'dod = "'+ req.body.dod + '",' +
+//                 'sex = "'+ req.body.sex + '",' +
+//                 'profession = "'+ req.body.profession + '",' +
+//                 'portrait = "'+ req.body.portrait + '",' +
+//                 'country = "'+ req.body.country + '",' +
+//                 'biography = "'+ req.body.biography + '"' +
+//                 'WHERE authorId = ' + req.params.aid + ";"
+//     pool.query(stmt, function(error, result){
+//         if(error) throw error;
+//         res.redirect('/author/' + req.params.aid);
+//     });
+// });
+
+function getProds(query){
+    
+    let keyword = query.keyword;
+    
+    return new Promise(function(resolve, reject){
+           console.log("Connected!");
+            
+            let params = [];
+            
+           let sql = `SELECT *
+                      FROM products
+                      NATURAL JOIN villagers
+                      NATURAL JOIN reviews
+                      WHERE 
+                      productName LIKE '%${keyword}%'
+                      ORDER BY productId`;
+        
+           console.log("SQL:", sql);
+           pool.query(sql, params, function (err, rows, fields) {
+              if (err) throw err;
+              resolve(rows);
+           });
+        
+    });//promise
+    
+}
 
 app.post('/loginFunction', function(req, res){
     var searchUser = 'SELECT * FROM villagers where (villagerUserName="' + req.body.villagerUserName +  '" AND villagerPassword="' +  req.body.villagerPassword + '");';
@@ -171,6 +267,16 @@ app.post('/loginFunction', function(req, res){
         }
     });
 });
+
+
+app.get('/product/:aid/delete', function(req, res){
+    var stmt = 'DELETE from products WHERE productId='+ req.params.aid + ';';
+    pool.query(stmt, function(error, result){
+        if(error) throw error;
+        res.redirect('/adminPage');
+    });
+});
+
 
 
 // function isAuthenticated(req, res, next){

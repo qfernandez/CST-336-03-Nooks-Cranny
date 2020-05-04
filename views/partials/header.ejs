@@ -2,7 +2,6 @@
 <html>
     <head>
         <title> Nooks Cranny </title>
-        <script language="javascript" type="text/javascript" src="rps.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel = "stylesheet" href="css/styles.css">
         <link rel = "stylesheet" href="js/functions.js">
@@ -19,7 +18,10 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="active-cyan-3 active-cyan-4 mb-4">
-            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+            <form class="text-center" action="/results">
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="keyword">
+                <button class="btn btn-primary"> Search! </button>
+            </form>
         </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">

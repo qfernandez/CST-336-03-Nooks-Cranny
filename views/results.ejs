@@ -1,0 +1,25 @@
+<%- include('partials/header.ejs') %>
+<body>
+    <div class="row">
+          <% products.forEach(function(product){  %>
+           <div class="col-lg-4 col-md-6 mb-4">
+             <div class="card h-100">
+              <td><img class="rounded" src="<%=product.productPicture%>" width="200px"/></td> <br>
+              <div class="card-body">
+                <h4 class="card-title">
+                <a href = productPage> <%= product.productName %> </a>
+                </h4>
+                <h5>
+                  Bells:<%= product.productPrice %> <br>
+                  Reviews: <br><br>
+                  <h2><%= product.reviewDescription %></h2>
+                  By: <%= product.villagerName %>
+                </h5>
+              </div>
+              <div class="card-footer">
+              </div>
+           </div>
+          </div>
+        <% }) %>
+</div>
+</body>
