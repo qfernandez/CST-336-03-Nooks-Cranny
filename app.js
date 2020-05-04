@@ -238,7 +238,7 @@ function getProds(query){
                       NATURAL JOIN villagers
                       NATURAL JOIN reviews
                       WHERE 
-                      productName LIKE '%${keyword}%'
+                      productName LIKE '%${keyword}%' or productPrice LIKE '%${keyword}%' or productType LIKE '%${keyword}%'
                       ORDER BY productId`;
         
            console.log("SQL:", sql);
