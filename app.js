@@ -150,7 +150,7 @@ app.post('/product/new', function(req, res){
             pool.query(stmt, function(error, result){
                 if(error) throw error;
                 res.redirect('/adminPage');
-            })
+            });
       }
   });
 });
