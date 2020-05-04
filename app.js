@@ -19,7 +19,7 @@ app.use(express.urlencoded()); //Used to parse data sent using the POST method
 // connection.connect();
 
 //Used Pool since I was getting some connection errors 
-//Connection was lost a few seconds after starting node app.js
+//Connection was intially lost a few seconds after starting node app.js
 const pool = mysql.createPool({
     host: 'us-cdbr-east-06.cleardb.net',
     user: 'b2a968485b2e2b',
