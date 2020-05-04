@@ -1,6 +1,7 @@
 /* Require external APIs and start our application instance */
 var express = require('express');
 var mysql = require('mysql');
+var bcrypt = require('bcrypt');
 const app = express();
 
 /* Configure our server to read public folder and ejs files */
@@ -28,6 +29,15 @@ const pool = mysql.createPool({
 });
 pool.query('select 1 + 1', (err, rows) => { /* */ });
 
+
+// const connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'adminUser',
+//     password: 'adminPassword',
+//     database: 'nookscranny'
+// });
+// connection.connect();
+
 //routes
 app.get("/", async function(req, res){
     let villagerList = await getVillagers();
@@ -38,6 +48,19 @@ app.get("/", async function(req, res){
 
 app.get("/login", function(req, res){
     res.render("login");
+});
+
+app.get("/adminPage", async function(req, res){
+    let productList = await getProducts();
+    res.render("admin", {"productList":productList});
+});
+
+app.get("/registerPage", function(req, res){
+    res.render("register");
+});
+
+app.get("/addproductPage", function(req, res){
+    res.render("productAdd");
 });
 
 //functions
@@ -80,6 +103,118 @@ function getReviews(){
         
     });//promise 
 }
+
+app.post('/villager/new', function(req, res){
+  //console.log(req.body);
+  pool.query('SELECT COUNT(*) FROM villagers;', function(error, result){
+      if(error) throw error;
+      if(result.length){
+            var villagerId = result[0]['COUNT(*)'] + 1;
+            var stmt = 'INSERT INTO villagers ' +
+                       '(villagerId, villagerName, villagerPicture, villagerUserName, villagerPassword) '+
+                       'VALUES ' +
+                       '(' + 
+                        villagerId + ',"' +
+                        req.body.villagerName + '","' +
+                        req.body.villagerPicture + '","' +
+                        req.body.villagerUserName + '","' +
+                        req.body.villagerPassword + '"' +
+                        ');';
+            console.log(stmt);
+            pool.query(stmt, function(error, result){
+                if(error) throw error;
+                res.redirect('/');
+            })
+      }
+  });
+});
+
+app.post('/product/new', function(req, res){
+  //console.log(req.body);
+  pool.query('SELECT COUNT(*) FROM products;', function(error, result){
+      if(error) throw error;
+      if(result.length){
+            var productId = result[0]['COUNT(*)'] + 1;
+            var stmt = 'INSERT INTO products ' +
+                       '(productId, productName, productPicture, productDescription, productType, productPrice) '+
+                       'VALUES ' +
+                       '(' + 
+                        productId + ',"' +
+                        req.body.productName + '","' +
+                        req.body.productPicture + '","' +
+                        req.body.productDescription + '","' +
+                        req.body.productType + '","' +
+                        req.body.productPrice + '"' +
+                        ');';
+            console.log(stmt);
+            pool.query(stmt, function(error, result){
+                if(error) throw error;
+                res.redirect('/adminPage');
+            })
+      }
+  });
+});
+
+app.post('/loginFunction', function(req, res){
+    var searchUser = 'SELECT * FROM villagers where (villagerUserName="' + req.body.villagerUserName +  '" AND villagerPassword="' +  req.body.villagerPassword + '");';
+    pool.query(searchUser, function(error, result){
+        if(error) throw error;
+        if(result.length){
+            
+            if(req.body.villagerUserName == 'tnook'){
+                res.redirect('/adminPage');
+            } else {
+                
+                
+            }
+            
+        }
+    });
+});
+
+
+// function isAuthenticated(req, res, next){
+//     if(!req.session.authenticated) res.redirect('/login');
+//     else next();
+// }
+
+// function checkUsername(username){
+//     let stmt = 'SELECT * FROM villagers WHERE villagerUserName=?';
+//     return new Promise(function(resolve, reject){
+//       connection.query(stmt, [username], function(error, results){
+//           if(error) throw error;
+//           resolve(results);
+//       }); 
+//     });
+// }
+
+// function checkPassword(password, hash){
+//     return new Promise(function(resolve, reject){
+//       bcrypt.compare(password, hash, function(error, result){
+//           if(error) throw error;
+//           resolve(result);
+//       }); 
+//     });
+// }
+
+// app.post('/loginFunction', function(req, res){
+//     let isUserExist   = await checkUsername(req.body.username);
+//     let hashedPasswd  = isUserExist.length > 0 ? isUserExist[0].villagerPassword : '';
+//     let passwordMatch = await checkPassword(req.body.password, hashedPasswd);
+//     if(passwordMatch){
+//         req.session.authenticated = true;
+//         req.session.user = isUserExist[0].username;
+//         res.redirect('/');
+//     }
+//     else{
+//         res.render('login', {error: true});
+//     }
+// });
+
+
+
+
+
 
 
 

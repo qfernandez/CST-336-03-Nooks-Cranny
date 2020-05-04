@@ -1,0 +1,60 @@
+<head>
+     <script language="javascript" type="text/javascript" src="rps.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel = "stylesheet" href="css/styles.css">
+        <link rel = "stylesheet" href="js/functions.js">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="sidenav">
+         <div class="login-main-text">
+            <h2>Application<br> Register Account</h2>
+            <p>Login or register from here to access.</p>
+         </div>
+      </div>
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+               <form action='/villager/new' method='POST'>
+        		<div class='form-group row'>
+        			<label for='villagerName' class='col-sm-4 col-form-label'>First Name</label>
+        			<div class='col-sm-4'>
+        				<input type='text' class='form-control' id='villagerName' name='villagerName' placeholder='Timmy' required>
+        			</div>
+        		</div>
+        		<div class='form-group row'>
+        			<label for='villagerPicture' class='col-sm-4 col-form-label'>Profile Picture</label>
+        			<div class='col-sm-4'>
+        				<input type='text' class='form-control' id='villagerPicture' name='villagerPicture' placeholder='Image URL'>
+        			</div>
+        		</div>
+        		<div class='form-group row'>
+        			<label for='villagerUserName' class='col-sm-4 col-form-label'>User Name</label>
+        			<div class='col-sm-4'>
+        				<!--<textarea class='form-control' rows='5' id='villagerUserName' name='villagerUserName'></textarea>-->
+        				<input type='text' class='form-control' id='villagerUserName' name='villagerUserName' placeholder='User Name'>
+        			</div>
+        		</div>
+        		<div class='form-group row'>
+        			<label for='villagerPassword' class='col-sm-4 col-form-label'>Password</label>
+        			<div class='col-sm-4'>
+        				<!--<textarea class='form-control' rows='5' id='villagerPassword' name='villagerPassword'></textarea>-->
+        				<input type='text' class='form-control' id='villagerPassword' name='villagerPassword' placeholder='Password'>
+        			</div>
+        		</div>
+        		<div class='form-group row'>
+        			<div class='col-sm-4'></div>
+        			<div class='col-sm-4'>
+        				<button class='btn btn-primary btn-block'>Sign Up</button>
+        			</div>
+        			<div class='col-sm-4'></div>
+        		</div>
+        	</form>
+               <a class='btn btn-danger' href='/'> Cancel </a>
+               <!--<a class='btn btn-secondary' href='/registerPage'> Register </a>-->
+               
+            </div>
+         </div>
+      </div>
+</body>

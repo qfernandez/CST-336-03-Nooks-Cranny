@@ -1,0 +1,22 @@
+<%- include('partials/header.ejs') %>
+
+        <h2>Items</h2>
+            <div class="countainer">
+                <% productList.forEach(function(product){  %>
+                    <li>
+                        <%=product.productName%></br>
+                        
+                    </li>
+                <% }) %>
+            </div>
+            
+            
+            <a class='btn btn-outline-primary' href='/addproductPage'> Add Product </a><br>
+            <a class='btn btn-danger' href='/'> Cancel </a>
+            
+            
+            
+    </body>
+</html>
+            
+            
