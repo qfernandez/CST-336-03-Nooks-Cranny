@@ -9,25 +9,39 @@
 <body>
     <div class="sidenav">
          <div class="login-main-text">
-            <h2>Application<br> Login Page</h2>
+            <h2>Application<br> Register Account</h2>
             <p>Login or register from here to access.</p>
          </div>
       </div>
       <div class="main">
          <div class="col-md-6 col-sm-12">
-            <div class="login-form">
-               <form>
-                  <div class="form-group">
-                     <label>User Name</label>
-                     <input type="text" class="form-control" placeholder="User Name">
-                  </div>
-                  <div class="form-group">
-                     <label>Password</label>
-                     <input type="password" class="form-control" placeholder="Password">
-                  </div>
-                  <button type="submit" class="btn btn-black">Login</button>
-                  <button type="submit" class="btn btn-secondary">Register</button>
-               </form>
+            <div class="loginFunctionForm">
+               <form action='/loginFunction' method='POST'>
+              		<div class='form-group row'>
+              			<label for='villagerUserName' class='col-sm-4 col-form-label'>User Name</label>
+              			<div class='col-sm-4'>
+              				<!--<textarea class='form-control' rows='5' id='villagerUserName' name='villagerUserName'></textarea>-->
+              				<input type='text' class='form-control' id='villagerUserName' name='villagerUserName' placeholder='User Name'>
+              			</div>
+              		</div>
+              		<div class='form-group row'>
+              			<label for='villagerPassword' class='col-sm-4 col-form-label'>Password</label>
+              			<div class='col-sm-4'>
+              				<!--<textarea class='form-control' rows='5' id='villagerPassword' name='villagerPassword'></textarea>-->
+              				<input type='text' class='form-control' id='villagerPassword' name='villagerPassword' placeholder='Password'>
+              			</div>
+              		</div>
+              		<div class='form-group row'>
+              			<div class='col-sm-4'></div>
+              			<div class='col-sm-4'>
+              				<button class='btn btn-primary btn-block'>Log In</button>
+              			</div>
+              			<div class='col-sm-4'></div>
+              		</div>
+        	      </form>
+               <a class='btn btn-danger' href='/'> Cancel </a>
+               <a class='btn btn-secondary' href='/registerPage'> Register </a>
+               
             </div>
          </div>
       </div>
