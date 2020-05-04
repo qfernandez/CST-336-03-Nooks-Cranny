@@ -124,7 +124,7 @@ app.post('/villager/new', function(req, res){
             pool.query(stmt, function(error, result){
                 if(error) throw error;
                 res.redirect('/');
-            })
+            });
       }
   });
 });
