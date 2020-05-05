@@ -191,15 +191,31 @@ app.get('/product/:aid/edit', function(req, res){
 });
 
 //Update product
-// app.put('/product/:aid', function(req, res){
+app.post('/productUpdate/:aid', function(req, res){
+    console.log(req.body);
+    var stmt = 'UPDATE products SET ' +
+                'productName = "'+ req.body.productName + '",' +
+                'productPicture = "'+ req.body.productPicture + '",' +
+                'productDescription = "'+ req.body.productDescription + '",' +
+                'productType = "'+ req.body.productType + '",' +
+                'productPrice = "'+ req.body.productPrice + '"' +
+                'WHERE productId = ' + req.params.aid + ";";
+    console.log(stmt);
+    pool.query(stmt, function(error, result){
+        if(error) throw error;
+        res.redirect('/product/' + req.params.aid + '/edit');
+    });
+});
+
+// app.post('/product/:aid', function(req, res){
 //     console.log(req.body);
-//     var stmt = 'UPDATE products SET ' +
-//                 'productName = "'+ req.body.productName + '",' +
-//                 'productPicture = "'+ req.body.productPicture + '",' +
-//                 'productDescription = "'+ req.body.productDescription + '",' +
-//                 'productType = "'+ req.body.productType + '",' +
-//                 'productPrice = "'+ req.body.productPrice + '",' +
-//                 'WHERE productId = ' + req.params.aid + ";";
+//     var stmt = `UPDATE products SET 
+//                 productName = ?, 
+//                 productPicture = ?, 
+//                 productDescription = ?, 
+//                 productType = ?, 
+//                 productPrice = ? 
+//                 WHERE productId = ?`;
 //     console.log(stmt);
 //     pool.query(stmt, function(error, result){
 //         if(error) throw error;
@@ -207,40 +223,6 @@ app.get('/product/:aid/edit', function(req, res){
 //     });
 // });
 
-app.put('/product/:aid', function(req, res){
-    console.log(req.body);
-    var stmt = `UPDATE products SET 
-                productName = ?, 
-                productPicture = ?, 
-                productDescription = ?, 
-                productType = ?, 
-                productPrice = ? 
-                WHERE productId = ?`;
-    console.log(stmt);
-    pool.query(stmt, function(error, result){
-        if(error) throw error;
-        res.redirect('/product/' + req.params.aid);
-    });
-});
-
-// app.put('/author/:aid', function(req, res){
-//     console.log(req.body);
-//     var stmt = 'UPDATE l9_author SET ' +
-//                 'firstName = "'+ req.body.firstname + '",' +
-//                 'lastName = "'+ req.body.lastname + '",' +
-//                 'dob = "'+ req.body.dob + '",' +
-//                 'dod = "'+ req.body.dod + '",' +
-//                 'sex = "'+ req.body.sex + '",' +
-//                 'profession = "'+ req.body.profession + '",' +
-//                 'portrait = "'+ req.body.portrait + '",' +
-//                 'country = "'+ req.body.country + '",' +
-//                 'biography = "'+ req.body.biography + '"' +
-//                 'WHERE authorId = ' + req.params.aid + ";"
-//     connection.query(stmt, function(error, result){
-//         if(error) throw error;
-//         res.redirect('/author/' + req.params.aid);
-//     });
-// });
 
 //Search Query
 function getProds(query){

@@ -5,7 +5,8 @@
                 <% productList.forEach(function(product){  %>
                     <li>
                         <%=product.productName%></br>
-                        <td>  <a href='product/<%=product.productId%>'>Info</a> | <a href='/product/<%=product.productId%>/edit'>Edit</a> | <a href='/product/<%=product.productId%>/delete'>Delete</a>
+                        <!--<td>  <a href='product/<%=product.productId%>'>Info</a> | <a href='/product/<%=product.productId%>/edit'>Edit</a> | <a href='/product/<%=product.productId%>/delete'>Delete</a>-->
+                        <td> </td><a href='/product/<%=product.productId%>/edit'>Edit</a> | <a href='/product/<%=product.productId%>/delete'>Delete</a>
                         
                     </li>
                 <% }) %>

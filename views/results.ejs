@@ -7,13 +7,20 @@
               <td><img class="rounded" src="<%=product.productPicture%>" width="200px"/></td> <br>
               <div class="card-body">
                 <h4 class="card-title">
-                <a href = productPage> <%= product.productName %> </a>
+                Name: <%= product.productName %> </a>
                 </h4>
+                <h3>
+                    Description: <%= product.productDescription %> </a> <br>
+                </h3>
                 <h5>
-                  Bells:<%= product.productPrice %> <br>
-                  Reviews: <br>
-                  <h2><%= product.reviewDescription %></h2>
-                  By: <%= product.villagerName %>
+                    Type: <%= product.productType %> </a> <br>
+                    Bells:<%= product.productPrice %> <br>
+                  <ul class="list-group list-group-flush">
+                    Reviews: <br>
+                  <h4>-<%= product.reviewDescription %></h2>
+                    By: <%= product.villagerName %>
+                  <td><img class="rounded" src="<%=product.villagerPicture%>" height= "150px" width="100px"/></td> <br>
+                  </ul>
                 </h5>
               </div>
               <div class="card-footer">
