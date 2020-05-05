@@ -40,10 +40,8 @@ pool.query('select 1 + 1', (err, rows) => { /* */ });
 
 //routes
 app.get("/", async function(req, res){
-    let villagerList = await getVillagers();
     let productList = await getProducts();
-    let reviewList = await getReviews();
-    res.render("index", {"villagerList":villagerList,"productList":productList,"reviewList":reviewList});
+    res.render("index", {"productList":productList});
 });
 
 app.get("/login", function(req, res){
@@ -69,18 +67,20 @@ app.get("/results", async function(req, res){
 });
 
 //functions
-function getVillagers(){
-    return new Promise(function(resolve, reject){
-           let sql = `SELECT *
-                        FROM villagers
-                        ORDER BY villagerName`;
-           pool.query(sql, function (err, rows, fields) {
-              if (err) throw err;
-              resolve(rows);
-           });
+
+//Originally was used to test to see if we could get Villagers
+// function getVillagers(){
+//     return new Promise(function(resolve, reject){
+//           let sql = `SELECT *
+//                         FROM villagers
+//                         ORDER BY villagerName`;
+//           pool.query(sql, function (err, rows, fields) {
+//               if (err) throw err;
+//               resolve(rows);
+//           });
         
-    });//promise 
-}
+//     });//promise 
+// }
 
 function getProducts(){
     return new Promise(function(resolve, reject){
@@ -95,19 +95,20 @@ function getProducts(){
     });//promise 
 }
 
-function getReviews(){
-    return new Promise(function(resolve, reject){
-           let sql = `SELECT *
-                        FROM reviews
-                        NATURAL JOIN villagers NATURAL JOIN products
-                        ORDER BY productId`;
-           pool.query(sql, function (err, rows, fields) {
-              if (err) throw err;
-              resolve(rows);
-           });
+//Originally was used to see if we could get Reviews
+// function getReviews(){
+//     return new Promise(function(resolve, reject){
+//           let sql = `SELECT *
+//                         FROM reviews
+//                         NATURAL JOIN villagers NATURAL JOIN products
+//                         ORDER BY productId`;
+//           pool.query(sql, function (err, rows, fields) {
+//               if (err) throw err;
+//               resolve(rows);
+//           });
         
-    });//promise 
-}
+//     });//promise 
+// }
 
 app.post('/villager/new', function(req, res){
   //console.log(req.body);
@@ -129,7 +130,7 @@ app.post('/villager/new', function(req, res){
             pool.query(stmt, function(error, result){
                 if(error) throw error;
                 res.redirect('/');
-            })
+            });
       }
   });
 });
@@ -142,7 +143,7 @@ app.post('/product/new', function(req, res){
   pool.query('SELECT COUNT(*) FROM products;', function(error, result){
       if(error) throw error;
       if(result.length){
-            var productId = result[0]['COUNT(*)'] + 2;
+            var productId = result[0]['COUNT(*)'] + 1;
             var stmt = 'INSERT INTO products ' +
                        '(productId, productName, productPicture, productDescription, productType, productPrice) '+
                        'VALUES ' +
@@ -162,6 +163,7 @@ app.post('/product/new', function(req, res){
       }
   });
 });
+
 //Show Product
 app.get('/product/:aid', function(req, res){
     var stmt = 'SELECT * FROM products WHERE productId=' + req.params.aid + ';';
@@ -189,15 +191,31 @@ app.get('/product/:aid/edit', function(req, res){
 });
 
 //Update product
+// app.put('/product/:aid', function(req, res){
+//     console.log(req.body);
+//     var stmt = 'UPDATE products SET ' +
+//                 'productName = "'+ req.body.productName + '",' +
+//                 'productPicture = "'+ req.body.productPicture + '",' +
+//                 'productDescription = "'+ req.body.productDescription + '",' +
+//                 'productType = "'+ req.body.productType + '",' +
+//                 'productPrice = "'+ req.body.productPrice + '",' +
+//                 'WHERE productId = ' + req.params.aid + ";";
+//     console.log(stmt);
+//     pool.query(stmt, function(error, result){
+//         if(error) throw error;
+//         res.redirect('/product/' + req.params.aid);
+//     });
+// });
+
 app.put('/product/:aid', function(req, res){
     console.log(req.body);
-    var stmt = 'UPDATE products SET ' +
-                'productName = "'+ req.body.productName + '",' +
-                'productPicture = "'+ req.body.productPicture + '",' +
-                'productDescription = "'+ req.body.productDescription + '",' +
-                'productType = "'+ req.body.productType + '",' +
-                'productPrice = "'+ req.body.productPrice + '",' +
-                'WHERE productId = ' + req.params.aid + ";";
+    var stmt = `UPDATE products SET 
+                productName = ?, 
+                productPicture = ?, 
+                productDescription = ?, 
+                productType = ?, 
+                productPrice = ? 
+                WHERE productId = ?`;
     console.log(stmt);
     pool.query(stmt, function(error, result){
         if(error) throw error;
@@ -218,12 +236,13 @@ app.put('/product/:aid', function(req, res){
 //                 'country = "'+ req.body.country + '",' +
 //                 'biography = "'+ req.body.biography + '"' +
 //                 'WHERE authorId = ' + req.params.aid + ";"
-//     pool.query(stmt, function(error, result){
+//     connection.query(stmt, function(error, result){
 //         if(error) throw error;
 //         res.redirect('/author/' + req.params.aid);
 //     });
 // });
 
+//Search Query
 function getProds(query){
     
     let keyword = query.keyword;
@@ -231,19 +250,20 @@ function getProds(query){
     return new Promise(function(resolve, reject){
            console.log("Connected!");
             
-            let params = [];
+           let params = [];
             
            let sql = `SELECT *
                       FROM products
-                      NATURAL JOIN villagers
-                      NATURAL JOIN reviews
-                      WHERE 
-                      productName LIKE '%${keyword}%' or productPrice LIKE '%${keyword}%' or productType LIKE '%${keyword}%'
-                      ORDER BY productId`;
-        
+                      LEFT JOIN reviews
+                      ON products.productId = reviews.productId 
+                      LEFT JOIN villagers
+                      ON reviews.villagerId = villagers.villagerId
+                      WHERE productName LIKE '%${keyword}%' or productPrice LIKE '%${keyword}%' or productType LIKE '%${keyword}%'
+                      ORDER BY productName`;
            console.log("SQL:", sql);
            pool.query(sql, params, function (err, rows, fields) {
               if (err) throw err;
+              pool.end;
               resolve(rows);
            });
         
@@ -316,13 +336,6 @@ app.get('/product/:aid/delete', function(req, res){
 //         res.render('login', {error: true});
 //     }
 // });
-
-
-
-
-
-
-
 
 //starting server
 app.listen(process.env.PORT, process.env.IP, function(){
