@@ -49,15 +49,25 @@ body {
         left: 0;
     }
 
-    .login-form{
+    .login-form-2{
         margin-top: 80%;
     }
 
     .register-form{
         margin-top: 20%;
     }
+    
+    .login-form{
+        margin-top: 10%;
+    }
+    
 }
 
+.jumbotron{
+    height : 20px;
+    margin-top: -30px;
+    vertical-align: middle;
+}
 
 .login-main-text{
     margin-top: 20%;

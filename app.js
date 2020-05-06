@@ -143,7 +143,7 @@ app.post('/product/new', function(req, res){
   pool.query('SELECT COUNT(*) FROM products;', function(error, result){
       if(error) throw error;
       if(result.length){
-            var productId = result[0]['COUNT(*)'] + 1;
+            var productId = result[0]['COUNT(*)'] + 2;
             var stmt = 'INSERT INTO products ' +
                        '(productId, productName, productPicture, productDescription, productType, productPrice) '+
                        'VALUES ' +
